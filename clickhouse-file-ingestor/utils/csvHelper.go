@@ -1,0 +1,36 @@
+// utils/csvHelper.go
+package utils
+
+import (
+    "encoding/csv"
+    "os"
+    "fmt"
+)
+
+func ReadCSV(filePath string) ([][]string, error) {
+    file, err := os.Open(filePath)
+    if err != nil {
+        return nil, err
+    }
+    defer file.Close()
+
+    reader := csv.NewReader(file)
+    records, err := reader.ReadAll()
+    if err != nil {
+        return nil, err
+    }
+
+    return records, nil
+}
+
+func WriteCSV(filePath string, records [][]string) error {
+    file, err := os.Create(filePath)
+    if err != nil {
+        return err
+    }
+    defer file.Close()
+
+    writer := csv.NewWriter(file)
+    writer.WriteAll(records)
+    return nil
+}
